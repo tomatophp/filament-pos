@@ -1,14 +1,13 @@
 ![Screenshot](https://github.com/tomatophp/filament-pos/blob/master/arts/3x1io-tomato-pos.jpg)
 
-# Filament pos
+# Filament POS
 
 [![Latest Stable Version](https://poser.pugx.org/tomatophp/filament-pos/version.svg)](https://packagist.org/packages/tomatophp/filament-pos)
-[![PHP Version Require](http://poser.pugx.org/tomatophp/filament-pos/require/php)](https://packagist.org/packages/tomatophp/filament-pos)
 [![License](https://poser.pugx.org/tomatophp/filament-pos/license.svg)](https://packagist.org/packages/tomatophp/filament-pos)
 [![Downloads](https://poser.pugx.org/tomatophp/filament-pos/d/total.svg)](https://packagist.org/packages/tomatophp/filament-pos)
 
 
-POS working with Ecommerce System for FilamentPHP
+POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder
 
 ## Installation
 
@@ -47,11 +46,6 @@ you can publish languages file by use this command
 php artisan vendor:publish --tag="filament-pos-lang"
 ```
 
-you can publish migrations file by use this command
-
-```bash
-php artisan vendor:publish --tag="filament-pos-migrations"
-```
 
 ## Support
 
