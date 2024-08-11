@@ -9,6 +9,15 @@
 
 POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder
 
+
+## Screenshots 
+
+![Home](https://github.com/tomatophp/filament-pos/blob/master/arts/home.png)
+![Cart](https://github.com/tomatophp/filament-pos/blob/master/arts/cart.png)
+![Checkout](https://github.com/tomatophp/filament-pos/blob/master/arts/checkout.png)
+![Notification](https://github.com/tomatophp/filament-pos/blob/master/arts/notification.png)
+![Print](https://github.com/tomatophp/filament-pos/blob/master/arts/print.png)
+
 ## Installation
 
 ```bash
