@@ -13,6 +13,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Filament\Tables;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 use TomatoPHP\FilamentCms\Models\Category;
 use TomatoPHP\FilamentEcommerce\Filament\Resources\OrderResource;
@@ -33,7 +34,22 @@ class Pos extends Page implements HasForms, HasTable
     use HasCheckout;
 
 
+    public static ?string $navigationIcon = 'heroicon-o-building-storefront';
+
+    public static string $view = 'filament-pos::pages.pos';
+
     public ?string $sessionID = null;
+
+
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament-pos::messages.title');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return trans('filament-pos::messages.title');
+    }
 
 
     protected function getHeaderActions(): array
@@ -61,23 +77,32 @@ class Pos extends Page implements HasForms, HasTable
         return $table->query(\TomatoPHP\FilamentEcommerce\Models\Product::query()->where('is_activated', 1))
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('feature_image')
+                    ->label(trans('filament-pos::messages.table.columns.image'))
                     ->square()
-                    ->collection('feature_image')
-                    ->label('Image'),
-                TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('sku')->searchable()->sortable(),
-                TextColumn::make('barcode')->searchable()->sortable(),
+                    ->collection('feature_image'),
+                TextColumn::make('name')
+                    ->label(trans('filament-pos::messages.table.columns.name'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('sku')
+                    ->label(trans('filament-pos::messages.table.columns.sku'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('barcode')
+                    ->label(trans('filament-pos::messages.table.columns.barcode'))
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('price')
+                    ->label(trans('filament-pos::messages.table.columns.price'))
                     ->state(fn(Product $product) => ($product->price+$product->vat) - $product->discount)
                     ->description(fn(Product $product) => '(Price:'.number_format($product->price, 2) . '+VAT:' . number_format($product->vat) . ')-Discount:' . number_format($product->discount))
-                    ->label(trans('filament-ecommerce::messages.product.columns.price'))
                     ->money(locale: 'en', currency: setting('site_currency'))
                     ->sortable(),
             ])
             ->actions([
                 Tables\Actions\Action::make('addToCart')
-                    ->label('Add To Cart')
-                    ->tooltip('Add To Cart')
+                    ->label(trans('filament-pos::messages.table.actions.addToCart'))
+                    ->tooltip(trans('filament-pos::messages.table.actions.addToCart'))
                     ->iconButton()
                     ->icon('heroicon-s-shopping-cart')
                     ->action(function($record){
@@ -104,10 +129,10 @@ class Pos extends Page implements HasForms, HasTable
 
                     }),
             ])
-            ->searchPlaceholder('Search By Product Name or Barcode Scan')
+            ->searchPlaceholder(trans('filament-pos::messages.table.search'))
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
-                    ->label(trans('filament-ecommerce::messages.product.filters.category_id'))
+                    ->label(trans('filament-pos::messages.table.filters.category_id'))
                     ->searchable()
                     ->options(Category::query()
                         ->where('for', 'product')
@@ -131,17 +156,17 @@ class Pos extends Page implements HasForms, HasTable
     public function notifyAndPrint(Order $order)
     {
         Notification::make()
-            ->title('Order Placed')
-            ->body('Order #'.$order->uuid.' Has Been Created', 'success')
+            ->title(trans('filament-pos::messages.notifications.checkout.title'))
+            ->body(trans('filament-pos::messages.notifications.checkout.message', ['uuid' => $order->uuid]))
             ->success()
             ->actions([
                 \Filament\Notifications\Actions\Action::make('print')
-                    ->label('Print Receipt')
+                    ->label(trans('filament-pos::messages.notifications.checkout.print'))
                     ->icon('heroicon-o-printer')
                     ->url(route('order.print', $order->id))
                     ->openUrlInNewTab(),
                 \Filament\Notifications\Actions\Action::make('preview')
-                    ->label('Preview Receipt')
+                    ->label(trans('filament-pos::messages.notifications.checkout.view'))
                     ->icon('heroicon-o-eye')
                     ->color('warning')
                     ->url(OrderResource::getUrl('view', ['record' => $order->id]))
@@ -150,11 +175,4 @@ class Pos extends Page implements HasForms, HasTable
             ->send();
     }
 
-    public static ?string $title = 'POS';
-
-    protected static ?string $navigationLabel = 'POS';
-
-    public static ?string $navigationIcon = 'heroicon-o-building-storefront';
-
-    public static string $view = 'filament-pos::pages.pos';
 }

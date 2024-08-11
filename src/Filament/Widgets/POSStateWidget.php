@@ -31,13 +31,13 @@ class POSStateWidget extends BaseWidget
             ->count();
 
         return [
-            Stat::make('Total Orders Today', (clone $orderQuery)->where('source', 'pos')->whereDay('created_at',Carbon::today())->count())
+            Stat::make(trans('filament-pos::messages.widgets.count'), (clone $orderQuery)->where('source', 'pos')->whereDay('created_at',Carbon::today())->count())
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->value((clone $orderQuery)->where('source', 'pos')->whereDay('created_at',Carbon::today())->count())
                 ->chart($trend->pluck('aggregate')->toArray())
                 ->color('primary')
                 ->icon('heroicon-s-shopping-cart'),
-            Stat::make('Total Order Money Today', (clone $orderQuery)->where('source', 'pos')->whereDay('created_at',Carbon::today())->sum('total'))
+            Stat::make(trans('filament-pos::messages.widgets.money'), (clone $orderQuery)->where('source', 'pos')->whereDay('created_at',Carbon::today())->sum('total'))
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->value(number_format((clone $orderQuery)->where('source', 'pos')->whereDay('created_at',Carbon::today())->sum('total'), 2))
                 ->chart($trend->pluck('aggregate')->toArray())

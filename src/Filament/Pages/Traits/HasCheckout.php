@@ -25,12 +25,12 @@ trait HasCheckout
     public function checkoutAction():Action
     {
         return Action::make('checkoutAction')
-            ->label('Checkout')
+            ->label(trans('filament-pos::messages.actions.checkout.label'))
             ->requiresConfirmation()
             ->form(function(array $arguments){
                 return [
                     Select::make('account_id')
-                        ->label('Account')
+                        ->label(trans('filament-pos::messages.actions.checkout.form.account_id'))
                         ->searchable([
                             'name',
                             'phone',
@@ -42,10 +42,13 @@ trait HasCheckout
                                 ->default('account'),
                             Hidden::make('loginBy')
                                 ->default('phone'),
-                            Hidden::make('username')->unique('accounts', 'username'),
+                            Hidden::make('username')
+                                ->unique('accounts', 'username'),
                             TextInput::make('name')
+                                ->label(trans('filament-pos::messages.actions.checkout.account.name'))
                                 ->required(),
                             TextInput::make('phone')
+                                ->label(trans('filament-pos::messages.actions.checkout.account.phone'))
                                 ->unique('accounts', 'phone')
                                 ->afterStateUpdated(function (Get $get, Set $set){
                                     $set('username', $get('phone'));
@@ -53,11 +56,13 @@ trait HasCheckout
                                 ->required()
                                 ->tel(),
                             TextInput::make('email')
+                                ->label(trans('filament-pos::messages.actions.checkout.account.email'))
                                 ->afterStateUpdated(function (Get $get, Set $set){
                                     $set('username', $get('email'));
                                 })
                                 ->email(),
-                            Textarea::make('address'),
+                            Textarea::make('address')
+                                ->label(trans('filament-pos::messages.actions.checkout.account.address')),
                         ])
                         ->createOptionUsing(function (array $data){
                             $data['is_active'] = 1;
@@ -66,6 +71,7 @@ trait HasCheckout
                         })
                         ->options(\TomatoPHP\FilamentAccounts\Models\Account::query()->where('is_active', 1)->pluck('name', 'id')),
                     Select::make('payment_method')
+                        ->label(trans('filament-pos::messages.actions.checkout.form.payment_method'))
                         ->default('cash')
                         ->searchable()
                         ->options([
@@ -76,13 +82,13 @@ trait HasCheckout
                         ])
                         ->required(),
                     TextInput::make('paid_amount')
+                        ->label(trans('filament-pos::messages.actions.checkout.form.paid_amount'))
                         ->default($arguments['total'])
-                        ->label('Paid Amount')
                         ->numeric()
                         ->required(),
                     Hidden::make('coupon_id'),
                     TextInput::make('coupon')
-                        ->label('Coupon')
+                        ->label(trans('filament-pos::messages.actions.checkout.form.coupon'))
                         ->suffixAction(
                             \Filament\Forms\Components\Actions\Action::make('apply')
                                 ->tooltip('Apply')
