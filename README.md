@@ -1,4 +1,4 @@
-![Screenshot](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/3x1io-tomato-pos.jpg)
+![Screenshot](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/3x1io-tomato-pos.jpg)
 
 # Filament POS
 
@@ -12,11 +12,11 @@ POS System for FilamentPHP with a lot of features and integration with Ecommerce
 
 ## Screenshots 
 
-![Home](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/home.png)
-![Cart](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/cart.png)
-![Checkout](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/checkout.png)
-![Notification](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/notification.png)
-![Print](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/print.png)
+![Home](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/home.png)
+![Cart](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/cart.png)
+![Checkout](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/checkout.png)
+![Notification](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/notification.png)
+![Print](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/print.png)
 
 ## Installation
 
