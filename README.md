@@ -1,4 +1,4 @@
-![Screenshot](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/3x1io-tomato-pos.jpg)
+![Screenshot](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/3x1io-tomato-pos.jpg)
 
 # Filament POS
 
@@ -12,17 +12,31 @@ POS System for FilamentPHP with a lot of features and integration with Ecommerce
 
 ## Screenshots 
 
-![Home](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/home.png)
-![Cart](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/cart.png)
-![Checkout](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/checkout.png)
-![Notification](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/notification.png)
-![Print](https://raw.githubusercontent.com/tomatophp/filament-pos/blob/master/arts/print.png)
+![Home](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/home.png)
+![Cart](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/cart.png)
+![Checkout](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/checkout.png)
+![Notification](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/notification.png)
+![Print](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/print.png)
 
 ## Installation
 
 ```bash
 composer require tomatophp/filament-pos
 ```
+
+we need the Media Library plugin to be installed and migrated you can use this command to publish the migration
+
+```bash
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
+```
+
+now you need to install the settings hub use these commands
+
+```bash
+php artisan vendor:publish --provider="Spatie\LaravelSettings\LaravelSettingsServiceProvider" --tag="migrations"
+php artisan filament-settings-hub:install
+```
+
 after install your package please run this command
 
 ```bash

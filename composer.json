@@ -40,6 +40,6 @@
         "filament/filament": "^3.0.0",
         "filament/spatie-laravel-media-library-plugin": "^3.0.0",
         "tomatophp/filament-ecommerce": "^1.0",
-        "tomatophp/filament-accounts": "^1.0"
+        "tomatophp/filament-accounts": "^2.0"
     }
 }
