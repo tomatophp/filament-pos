@@ -2,6 +2,7 @@
 
 return [
     "title" => "POS",
+    "group" => "Ordering",
     "widgets" => [
         "count" => "Total Orders Today",
         "money" => "Total Order Money Today"

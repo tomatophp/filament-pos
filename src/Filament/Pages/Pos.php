@@ -40,6 +40,10 @@ class Pos extends Page implements HasForms, HasTable
 
     public ?string $sessionID = null;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return trans('filament-pos::messages.group');
+    }
 
     public static function getNavigationLabel(): string
     {
