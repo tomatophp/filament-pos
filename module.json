@@ -1,0 +1,29 @@
+{
+    "name": "FilamentPos",
+    "alias": "filament-pos",
+    "description": {
+        "ar": "نظام نقاط البيع لـ FilamentPHP مع العديد من الميزات والتكامل مع Ecommerce Builder",
+        "en": "POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder",
+        "gr": "POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder",
+        "sp": "POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder"
+    },
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "TomatoPHP\\FilamentPos\\FilamentPosServiceProvider"
+    ],
+    "files": [],
+    "title": {
+        "ar": "نقطة البيع",
+        "en": "Point of Sale",
+        "gr": "Point of Sale",
+        "sp": "Point of Sale"
+    },
+    "color": "#cc1448",
+    "icon": "heroicon-c-building-storefront",
+    "placeholder": "https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/3x1io-tomato-pos.jpg",
+    "type": "plugin",
+    "version": "v1.0.3",
+    "github" : "https://github.com/tomatophp/filament-pos",
+    "docs" : "https://github.com/tomatophp/filament-pos"
+}
