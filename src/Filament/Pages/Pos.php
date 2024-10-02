@@ -22,6 +22,7 @@ use TomatoPHP\FilamentEcommerce\Models\Order;
 use TomatoPHP\FilamentEcommerce\Models\Product;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasCart;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasCheckout;
+use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasShield;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasProducts;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasSearch;
 
@@ -32,6 +33,7 @@ class Pos extends Page implements HasForms, HasTable
     use InteractsWithTable;
     use HasCart;
     use HasCheckout;
+    use HasShield;
 
 
     public static ?string $navigationIcon = 'heroicon-o-building-storefront';

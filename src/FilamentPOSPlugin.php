@@ -12,9 +12,23 @@ use TomatoPHP\FilamentPos\Filament\Widgets\POSStateWidget;
 
 class FilamentPOSPlugin implements Plugin
 {
+    public static bool $allowShield = false;
+
     public function getId(): string
     {
         return 'filament-pos';
+    }
+
+
+    public function allowShield(bool $allow = true): static
+    {
+        static::$allowShield = $allow;
+        return $this;
+    }
+
+    public function isShieldAllowed(): bool
+    {
+        return static::$allowShield;
     }
 
     public function register(Panel $panel): void
