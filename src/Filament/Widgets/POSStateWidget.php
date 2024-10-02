@@ -2,14 +2,18 @@
 
 namespace TomatoPHP\FilamentPos\Filament\Widgets;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Flowframe\Trend\Trend;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use TomatoPHP\FilamentEcommerce\Models\Order;
+use TomatoPHP\FilamentPos\Filament\Widgets\Traits\HasShield;
 
 class POSStateWidget extends BaseWidget
 {
+    use HasShield;
+
     protected static string $view = 'filament-widgets::stats-overview-widget';
 
     protected function getColumns(): int
