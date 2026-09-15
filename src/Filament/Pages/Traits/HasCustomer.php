@@ -2,7 +2,4 @@
 
 namespace TomatoPHP\FilamentPos\Filament\Pages\Traits;
 
-trait HasCustomer
-{
-
-}
+trait HasCustomer {}

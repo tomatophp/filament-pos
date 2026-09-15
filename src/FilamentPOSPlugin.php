@@ -9,7 +9,6 @@ use TomatoPHP\FilamentEcommerce\FilamentEcommercePlugin;
 use TomatoPHP\FilamentPos\Filament\Pages\Pos;
 use TomatoPHP\FilamentPos\Filament\Widgets\POSStateWidget;
 
-
 class FilamentPOSPlugin implements Plugin
 {
     public static bool $allowShield = false;
@@ -19,10 +18,10 @@ class FilamentPOSPlugin implements Plugin
         return 'filament-pos';
     }
 
-
     public function allowShield(bool $allow = true): static
     {
         static::$allowShield = $allow;
+
         return $this;
     }
 
@@ -33,15 +32,21 @@ class FilamentPOSPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        // Plugins the panel already registered keep the host app's configuration.
+        if (! $panel->hasPlugin('filament-ecommerce')) {
+            $panel->plugin(FilamentEcommercePlugin::make());
+        }
+
+        if (! $panel->hasPlugin('filament-accounts')) {
+            $panel->plugin(FilamentAccountsPlugin::make());
+        }
+
         $panel
-            ->plugins([
-                FilamentEcommercePlugin::make(),
-                FilamentAccountsPlugin::make()
-            ])
             ->pages([
                 Pos::class,
-            ])->widgets([
-                POSStateWidget::class
+            ])
+            ->widgets([
+                POSStateWidget::class,
             ]);
     }
 
@@ -52,6 +57,6 @@ class FilamentPOSPlugin implements Plugin
 
     public static function make(): static
     {
-        return new static();
+        return app(static::class);
     }
 }

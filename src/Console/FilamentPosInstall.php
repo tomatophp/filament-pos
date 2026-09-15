@@ -23,22 +23,14 @@ class FilamentPosInstall extends Command
      */
     protected $description = 'install package and publish assets';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Publish Vendor Assets');
-        $this->artisanCommand(["migrate"]);
-        $this->artisanCommand(["optimize:clear"]);
+        $this->artisanCommand(['migrate']);
+        $this->artisanCommand(['optimize:clear']);
         $this->info('Filament POS installed successfully.');
     }
 }

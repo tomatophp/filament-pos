@@ -1,0 +1,43 @@
+/*
+ * tomatophp/filament-pos
+ *
+ * Filament v5 panels only ship the utilities Filament itself uses, so the POS page brings the few
+ * utilities its layout, cart and totals need.
+ *
+ * The rules are deliberately not wrapped in a cascade layer: this file loads before Filament's app.css,
+ * so a layer declared here would rank below Filament's own layers and its reset would win.
+ * Responsive variants come last, in ascending breakpoint order, so they override the base rules.
+ */
+.flex { display: flex; }
+.grid { display: grid; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+
+.w-8 { width: 2rem; }
+.h-8 { height: 2rem; }
+.h-full { height: 100%; }
+
+.mt-2 { margin-top: 0.5rem; }
+.py-2 { padding-block: 0.5rem; }
+
+.divide-y > :not(:last-child) { border-top-width: 0; border-bottom-width: 1px; border-style: solid; }
+.divide-gray-100 > :not(:last-child) { border-color: var(--gray-100); }
+
+.text-center { text-align: center; }
+.font-bold { font-weight: 700; }
+.text-danger-600 { color: var(--danger-600); }
+
+:where(.dark, .dark *) .dark\:divide-white\/5 > :not(:last-child) { border-color: rgb(255 255 255 / 0.05); }
+
+@media (width >= 40rem) {
+    .sm\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+}
+
+@media (width >= 48rem) {
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .md\:col-span-2 { grid-column: span 2 / span 2; }
+}

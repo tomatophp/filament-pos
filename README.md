@@ -18,10 +18,23 @@ POS System for FilamentPHP with a lot of features and integration with Ecommerce
 ![Notification](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/notification.png)
 ![Print](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/print.png)
 
+## Compatibility
+
+| Filament POS | Filament | Laravel | PHP |
+|--------------|----------|---------|-----|
+| 5.x          | 5.x      | 12 / 13 | 8.2+ |
+| 1.x ([v3 branch](https://github.com/tomatophp/filament-pos/tree/v3)) | 3.x | 10 / 11 | 8.1+ |
+
 ## Installation
 
 ```bash
 composer require tomatophp/filament-pos
+```
+
+The POS page ships its own stylesheet, so publish the Filament assets after installing or updating the package
+
+```bash
+php artisan filament:assets
 ```
 
 we need the Media Library plugin to be installed and migrated you can use this command to publish the migration
@@ -48,6 +61,10 @@ finally register the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
 ```php
 ->plugin(\TomatoPHP\FilamentPos\FilamentPOSPlugin::make())
 ```
+
+The POS plugin registers `FilamentEcommercePlugin` and `FilamentAccountsPlugin` for you. If your panel already registers them (for example to enable coupons with `FilamentEcommercePlugin::make()->useCoupon()`), your configuration is kept.
+
+The POS page is available at `/admin/pos` and uses the ordering settings of the Ecommerce package (company, direct branch and order code).
 
 ## Use Filament Shield
 

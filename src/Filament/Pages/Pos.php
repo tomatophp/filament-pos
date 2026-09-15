@@ -2,43 +2,39 @@
 
 namespace TomatoPHP\FilamentPos\Filament\Pages;
 
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
-use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Tables;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 use TomatoPHP\FilamentCms\Models\Category;
 use TomatoPHP\FilamentEcommerce\Filament\Resources\OrderResource;
-use TomatoPHP\FilamentEcommerce\Models\Cart;
 use TomatoPHP\FilamentEcommerce\Models\Order;
 use TomatoPHP\FilamentEcommerce\Models\Product;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasCart;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasCheckout;
 use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasShield;
-use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasProducts;
-use TomatoPHP\FilamentPos\Filament\Pages\Traits\HasSearch;
 
 class Pos extends Page implements HasForms, HasTable
 {
-    use InteractsWithForms;
-    use InteractsWithFormActions;
-    use InteractsWithTable;
     use HasCart;
     use HasCheckout;
     use HasShield;
+    use InteractsWithForms;
+    use InteractsWithTable;
 
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-storefront';
 
-    public static ?string $navigationIcon = 'heroicon-o-building-storefront';
-
-    public static string $view = 'filament-pos::pages.pos';
+    protected string $view = 'filament-pos::pages.pos';
 
     public ?string $sessionID = null;
 
@@ -57,7 +53,6 @@ class Pos extends Page implements HasForms, HasTable
         return trans('filament-pos::messages.title');
     }
 
-
     protected function getHeaderActions(): array
     {
         return [
@@ -68,21 +63,20 @@ class Pos extends Page implements HasForms, HasTable
         ];
     }
 
-    public function mount()
+    public function mount(): void
     {
-        if(!session()->has('sessionID')){
-            session()->put('sessionID', Str::uuid());
+        if (! session()->has('sessionID')) {
+            session()->put('sessionID', (string) Str::uuid());
         }
-        else {
-            $this->sessionID = session()->get('sessionID');
-        }
+
+        $this->sessionID = (string) session()->get('sessionID');
     }
 
     public function table(Table $table): Table
     {
-        return $table->query(\TomatoPHP\FilamentEcommerce\Models\Product::query()->where('is_activated', 1))
+        return $table->query(Product::query()->where('is_activated', 1))
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('feature_image')
+                SpatieMediaLibraryImageColumn::make('feature_image')
                     ->label(trans('filament-pos::messages.table.columns.image'))
                     ->square()
                     ->collection('feature_image'),
@@ -100,57 +94,34 @@ class Pos extends Page implements HasForms, HasTable
                     ->sortable(),
                 TextColumn::make('price')
                     ->label(trans('filament-pos::messages.table.columns.price'))
-                    ->state(fn(Product $product) => ($product->price+$product->vat) - $product->discount)
-                    ->description(fn(Product $product) => '(Price:'.number_format($product->price, 2) . '+VAT:' . number_format($product->vat) . ')-Discount:' . number_format($product->discount))
-                    ->money(locale: 'en', currency: setting('site_currency'))
+                    ->state(fn (Product $product) => ($product->price + $product->vat) - $product->discount)
+                    ->description(fn (Product $product) => '(Price:'.number_format($product->price, 2).'+VAT:'.number_format($product->vat).')-Discount:'.number_format($product->discount))
+                    ->money(locale: 'en', currency: setting('site_currency') ?: null)
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('addToCart')
+            ->recordActions([
+                Action::make('addToCart')
                     ->label(trans('filament-pos::messages.table.actions.addToCart'))
                     ->tooltip(trans('filament-pos::messages.table.actions.addToCart'))
                     ->iconButton()
                     ->icon('heroicon-s-shopping-cart')
-                    ->action(function($record){
-                        $existsOnCart = Cart::query()
-                            ->where('session_id', $this->sessionID)
-                            ->where('product_id', $record->id)
-                            ->first();
-                        if(!$existsOnCart){
-                            Cart::query()->create([
-                                'session_id' => $this->sessionID,
-                                'item' => $record->name,
-                                'product_id' => $record->id,
-                                'price' => $record->price,
-                                'discount' => $record->discount,
-                                'vat' => $record->vat,
-                                'total' => ($record->price + $record->vat) - $record->discount,
-                                'qty' => 1,
-                            ]);
-                        }
-                        else {
-                            $existsOnCart->qty += 1;
-                            $existsOnCart->save();
-                        }
-
-                    }),
+                    ->action(fn (Product $record) => $this->addToCart($record)),
             ])
             ->searchPlaceholder(trans('filament-pos::messages.table.search'))
             ->filters([
-                Tables\Filters\SelectFilter::make('category_id')
+                SelectFilter::make('category_id')
                     ->label(trans('filament-pos::messages.table.filters.category_id'))
                     ->searchable()
-                    ->options(Category::query()
+                    ->options(fn () => Category::query()
                         ->where('for', 'product')
                         ->where('type', 'category')
                         ->pluck('name', 'id')
-                        ->toArray()
-                    ),
+                        ->toArray()),
             ])
             ->defaultSort('name', 'desc');
     }
 
-    public function notify(string $title, string $type = 'success')
+    public function notify(string $title, string $type = 'success'): void
     {
         Notification::make()
             ->title(Str::title($type))
@@ -159,19 +130,19 @@ class Pos extends Page implements HasForms, HasTable
             ->send();
     }
 
-    public function notifyAndPrint(Order $order)
+    public function notifyAndPrint(Order $order): void
     {
         Notification::make()
             ->title(trans('filament-pos::messages.notifications.checkout.title'))
             ->body(trans('filament-pos::messages.notifications.checkout.message', ['uuid' => $order->uuid]))
             ->success()
             ->actions([
-                \Filament\Notifications\Actions\Action::make('print')
+                Action::make('print')
                     ->label(trans('filament-pos::messages.notifications.checkout.print'))
                     ->icon('heroicon-o-printer')
                     ->url(route('order.print', $order->id))
                     ->openUrlInNewTab(),
-                \Filament\Notifications\Actions\Action::make('preview')
+                Action::make('preview')
                     ->label(trans('filament-pos::messages.notifications.checkout.view'))
                     ->icon('heroicon-o-eye')
                     ->color('warning')
@@ -180,5 +151,4 @@ class Pos extends Page implements HasForms, HasTable
             ])
             ->send();
     }
-
 }

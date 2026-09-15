@@ -18,7 +18,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "TomatoPHP\\FilamentPos\\Tests\\": "tests/src/",
+            "TomatoPHP\\FilamentPos\\Tests\\Database\\Factories\\": "tests/database/factories"
         }
     },
     "extra": {
@@ -28,6 +29,21 @@
             ]
         }
     },
+    "scripts": {
+        "testbench": "vendor/bin/testbench package:discover --ansi",
+        "db": "vendor/bin/testbench package:create-sqlite-db && vendor/bin/testbench migrate",
+        "analyse": "vendor/bin/phpstan analyse src tests",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
     "authors": [
         {
             "name": "Fady Mondy",
@@ -35,11 +51,26 @@
         }
     ],
     "require": {
-        "php": "^8.1|^8.2",
+        "php": "^8.2",
+        "filament/filament": "^5.0",
+        "filament/spatie-laravel-media-library-plugin": "^5.0",
         "tomatophp/console-helpers": "^1.1",
-        "filament/filament": "^3.0.0",
-        "filament/spatie-laravel-media-library-plugin": "^3.0.0",
-        "tomatophp/filament-ecommerce": "^1.0",
-        "tomatophp/filament-accounts": "^2.0"
-    }
+        "tomatophp/filament-accounts": "^5.0",
+        "tomatophp/filament-ecommerce": "^5.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.24",
+        "nunomaduro/collision": "^8.6",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.0|^5.0",
+        "pestphp/pest-plugin-arch": "^4.0|^5.0",
+        "pestphp/pest-plugin-laravel": "^4.0|^5.0",
+        "pestphp/pest-plugin-livewire": "^4.0|^5.0",
+        "pestphp/pest-plugin-type-coverage": "^4.0|^5.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
+    },
+    "version": "5.0.0"
 }

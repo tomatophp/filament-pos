@@ -2,56 +2,61 @@
 
 namespace TomatoPHP\FilamentPos;
 
+use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\ServiceProvider;
-
+use TomatoPHP\FilamentPos\Console\FilamentPosInstall;
 
 class FilamentPosServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //Register generate command
+        // Register generate command
         $this->commands([
-           \TomatoPHP\FilamentPos\Console\FilamentPosInstall::class,
+            FilamentPosInstall::class,
         ]);
 
-        //Register Config file
+        // Register Config file
         $this->mergeConfigFrom(__DIR__.'/../config/filament-pos.php', 'filament-pos');
 
-        //Publish Config
+        // Publish Config
         $this->publishes([
-           __DIR__.'/../config/filament-pos.php' => config_path('filament-pos.php'),
+            __DIR__.'/../config/filament-pos.php' => config_path('filament-pos.php'),
         ], 'filament-pos-config');
 
-        //Register Migrations
+        // Register Migrations
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        //Publish Migrations
+        // Publish Migrations
         $this->publishes([
-           __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'filament-pos-migrations');
-        //Register views
+
+        // Register views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'filament-pos');
 
-        //Publish Views
+        // Publish Views
         $this->publishes([
-           __DIR__.'/../resources/views' => resource_path('views/vendor/filament-pos'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/filament-pos'),
         ], 'filament-pos-views');
 
-        //Register Langs
+        // Register Langs
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'filament-pos');
 
-        //Publish Lang
+        // Publish Lang
         $this->publishes([
-           __DIR__.'/../resources/lang' => base_path('lang/vendor/filament-pos'),
+            __DIR__.'/../resources/lang' => base_path('lang/vendor/filament-pos'),
         ], 'filament-pos-lang');
 
-        //Register Routes
+        // Register Routes
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-
     }
 
     public function boot(): void
     {
-        //you boot methods here
+        // Filament v5 panels only compile Filament's own utilities, so the POS views bring theirs.
+        FilamentAsset::register([
+            Css::make('filament-pos', __DIR__.'/../resources/dist/filament-pos.css'),
+        ], 'tomatophp/filament-pos');
     }
 }

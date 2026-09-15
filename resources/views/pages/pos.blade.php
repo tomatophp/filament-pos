@@ -5,14 +5,14 @@
             {{ $this->table }}
         </div>
        <div class="flex flex-col gap-4">
+           @php $cart = $this->getCartItems() @endphp
            <x-filament::section :heading="trans('filament-pos::messages.view.cart')">
-               @php $cart = \TomatoPHP\FilamentEcommerce\Models\Cart::query()->where('session_id', $this->sessionID)->get() @endphp
                @if(count($cart))
                    <div class="divide-y divide-gray-100 dark:divide-white/5">
                        @foreach($cart as $item)
-                           <div class="flex justify-between items-center py-2">
+                           <div class="flex justify-between items-center py-2" wire:key="pos-cart-{{ $item->id }}">
                                <div>
-                                   <p>{{ $item->product->name }}</p>
+                                   <p>{{ $item->product?->name ?? $item->item }}</p>
                                    <p>{{ $item->qty }} * {{ number_format(($item->price+$item->vat)-$item->discount, 2) }}<small>{{ setting('site_currency') }}</small></p>
                                </div>
                                <div>
@@ -27,7 +27,7 @@
                @else
                    <div class="text-center flex justify-center items-center flex-col h-full">
                        <div class="flex justify-center items-center flex-col gap-2">
-                           <x-heroicon-c-shopping-cart class="w-8 h-8" />
+                           <x-filament::icon icon="heroicon-c-shopping-cart" class="w-8 h-8" />
                            <p>{{ trans('filament-pos::messages.view.empty') }}</p>
                        </div>
                    </div>
@@ -38,31 +38,23 @@
                 <div class="divide-y divide-gray-100 dark:divide-white/5">
                      <div class="flex justify-between items-center py-2">
                           <p class="font-bold">{{ trans('filament-pos::messages.view.subtotal') }}</p>
-                          <p>{{ number_format($cart->sum(function ($item){
-                                return $item->qty * $item->price;
-                            }), 2) }}<small>{{ setting('site_currency') }}</small></p>
+                          <p>{{ number_format($cart->sum(fn ($item) => $item->qty * $item->price), 2) }}<small>{{ setting('site_currency') }}</small></p>
                      </div>
                     <div class="flex justify-between items-center py-2 text-danger-600">
                         <p class="font-bold">{{ trans('filament-pos::messages.view.discount') }}</p>
-                        <p>{{ number_format($cart->sum(function ($item){
-                                return $item->qty * $item->discount;
-                            }), 2) }}<small>{{ setting('site_currency') }}</small></p>
+                        <p>{{ number_format($cart->sum(fn ($item) => $item->qty * $item->discount), 2) }}<small>{{ setting('site_currency') }}</small></p>
                     </div>
                      <div class="flex justify-between items-center py-2">
                           <p class="font-bold">{{ trans('filament-pos::messages.view.vat') }}</p>
-                          <p>{{ number_format($cart->sum(function ($item){
-                                return $item->qty * $item->vat;
-                            }), 2) }}<small>{{ setting('site_currency') }}</small></p>
+                          <p>{{ number_format($cart->sum(fn ($item) => $item->qty * $item->vat), 2) }}<small>{{ setting('site_currency') }}</small></p>
                      </div>
                      <div class="flex justify-between items-center py-2">
                           <p class="font-bold">{{ trans('filament-pos::messages.view.total') }}</p>
-                          <p class="font-bold">{{ number_format($cart->sum(function ($item){
-                                return $item->qty * $item->total;
-                            }), 2) }}<small>{{ setting('site_currency') }}</small></p>
+                          <p class="font-bold">{{ number_format($cart->sum(fn ($item) => $item->qty * $item->total), 2) }}<small>{{ setting('site_currency') }}</small></p>
                      </div>
                 </div>
                 <div class="mt-2">
-                     {{ ($this->checkoutAction)(['total' => $cart->sum(fn($item) => ($item->qty * $item->total))]) }}
+                     {{ ($this->checkoutAction)(['total' => $cart->sum(fn ($item) => $item->qty * $item->total)]) }}
                 </div>
            </x-filament::section>
            @endif
