@@ -12,11 +12,8 @@ POS System for FilamentPHP with a lot of features and integration with Ecommerce
 
 ## Screenshots 
 
-![Home](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/home.png)
-![Cart](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/cart.png)
-![Checkout](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/checkout.png)
-![Notification](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/notification.png)
-![Print](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/print.png)
+![POS](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/pos-light.png)
+![POS Dark](https://raw.githubusercontent.com/tomatophp/filament-pos/master/arts/pos-dark.png)
 
 ## Compatibility
 

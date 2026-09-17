@@ -2,6 +2,7 @@
     "name": "tomatophp/filament-pos",
     "type": "library",
     "description": "POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder",
+    "homepage": "https://tomatophp.com/en/plugins/filament-pos",
     "keywords": [
         "php",
         "laravel",
